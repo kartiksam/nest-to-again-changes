@@ -104,8 +104,10 @@ export class AuthService {
         console.log(plainUser);
         const payload = { id: plainUser._id, email: plainUser.email, role: plainUser.role };
         console.log('Token payload:', payload); // Optional
+        return jwt.sign(payload, this.SECRET_KEY, {
+            expiresIn: '30s', // 1 hour
+        });
 
-        return jwt.sign(payload, this.SECRET_KEY);
     }
 
     async verifyToken(token: string) {
