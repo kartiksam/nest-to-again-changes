@@ -7,7 +7,7 @@ import { ErrorLogService } from './modules/error-log/error-log.service';
 import { SwaggerAuthMiddleware } from './middleware/SwaggerMiddleware';
 
 import * as dotenv from 'dotenv';
-dotenv.config(); // ⬅️
+dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

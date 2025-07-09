@@ -3,6 +3,9 @@ import { Types } from "mongoose";
 export class ResponseUserDto {
 
     @ApiProperty()
+    _id: string;
+
+    @ApiProperty()
     name: string;
 
     @ApiProperty()

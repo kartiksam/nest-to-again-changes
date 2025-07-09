@@ -54,6 +54,11 @@ export class UserService {
     async findByEmail(email: string) {
         return await this.userModel.findOne({ email: email });
     }
+
+    async markVerified(userId: string) {
+        return this.userModel.updateOne({ _id: userId }, { isVerified: true });
+    }
+
 }
 
 

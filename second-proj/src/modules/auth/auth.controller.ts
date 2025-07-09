@@ -8,11 +8,13 @@ import { RolesGuard } from './role.guard.service';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role';
 import { Request } from 'express';
+import { VerifyOtpDto } from '../otps/dto/otp.dto';
+import { OtpsService } from '../otps/otps.service';
 
 @Controller('auth')
 export class AuthController {
 
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService, private otpService: OtpsService) { }
     @Post('login')
     async login(@Body() loginDto: LoginDto, @Req() req: Request) {
         const user = await this.authService.validateUser(loginDto, req);
@@ -22,6 +24,11 @@ export class AuthController {
     @Post('register')
     async register(@Body() registerDto: RegisterDto) {
         return this.authService.register(registerDto);
+    }
+
+    @Post('verify-otp')
+    async verifyOtp(@Body() dto: VerifyOtpDto) {
+        return this.authService.verifyOtp(dto);
     }
 
     @Get('me')

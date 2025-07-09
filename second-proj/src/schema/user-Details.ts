@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Address } from "./address-Schema";
-import * as mongoose from "mongoose";
 import * as  moment from "moment";
 
 export type UserDetailsDocument = UserDetails & Document;

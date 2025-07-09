@@ -4,7 +4,8 @@ import { Types } from "mongoose";
 import { Role } from "src/enums/role";
 
 
-export type UserDocument = User & Document;
+export type UserDocument = User & Document & { _id: Types.ObjectId };
+
 @Schema()
 export class User {
 
@@ -25,6 +26,10 @@ export class User {
 
     @Prop({ default: true })
     isActive: boolean;
+
+    @Prop({ default: false })
+    isVerified: boolean;
+
 
     @Prop()
     deletedAt?: Date;
