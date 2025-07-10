@@ -4,12 +4,14 @@ import { Otp, OtpDocument } from './otp.schema';
 import { Model, Types } from 'mongoose';
 import { VerifyOtpDto } from './dto/otp.dto';
 import { UserService } from '../users/services/user.service';
+import { EmailService } from '../email/email.service';
+import { User, UserDocument } from 'src/schema/user.Schema';
 
 
 @Injectable()
 export class OtpsService {
 
-    constructor(@InjectModel(Otp.name) private otpModel: Model<OtpDocument>, private readonly userService: UserService) { }
+    constructor(@InjectModel(Otp.name) private otpModel: Model<OtpDocument>, @InjectModel(User.name) private userModel: Model<UserDocument>, private readonly userService: UserService, private readonly emailService: EmailService) { }
 
     async generateOtp(userId: Types.ObjectId) {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -23,9 +25,20 @@ export class OtpsService {
         })
 
         // todo send otp on mails
+        // ✅ Get user email
+        const user = await this.userModel.findById(userId);
+        if (!user || !user.email) {
+            return { message: 'User email not found' };
+        }
 
+        // ✅ Send OTP via email
+        await this.emailService.sendEmail({
+            recipients: [user.email],
+            subject: 'Your OTP Code',
+            html: `<p>Your OTP is <strong>${otp}</strong>. It will expire in 3 minutes.</p>`,
+        });
         console.log(`Generated Otp for ${userId}: ${otp}`);
-        return { message: 'OPt sent successfully' };
+        return { message: `OPt sent successfully on email ${user.email}` };
 
     }
 

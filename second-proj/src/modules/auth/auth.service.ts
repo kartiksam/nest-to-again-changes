@@ -107,8 +107,7 @@ export class AuthService {
         return jwt.sign(payload, this.SECRET_KEY, {
             expiresIn: '30s', // 1 hour
         });
-
-    }
+            }
 
     async verifyToken(token: string) {
         try {
