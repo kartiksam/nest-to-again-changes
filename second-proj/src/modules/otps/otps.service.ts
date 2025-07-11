@@ -6,12 +6,22 @@ import { VerifyOtpDto } from './dto/otp.dto';
 import { UserService } from '../users/services/user.service';
 import { EmailService } from '../email/email.service';
 import { User, UserDocument } from 'src/schema/user.Schema';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 
 @Injectable()
 export class OtpsService {
 
     constructor(@InjectModel(Otp.name) private otpModel: Model<OtpDocument>, @InjectModel(User.name) private userModel: Model<UserDocument>, private readonly userService: UserService, private readonly emailService: EmailService) { }
+
+
+    @Cron(CronExpression.EVERY_5_MINUTES)
+    async deleteExpiredOtps() {
+        const now = new Date();
+        const result = await this.otpModel.deleteMany({ expiresAt: { $lt: now } });
+        console.log(`🧹 CronJob: Deleted ${result.deletedCount} expired OTP(s)`);
+
+    }
 
     async generateOtp(userId: Types.ObjectId) {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -24,14 +34,12 @@ export class OtpsService {
             expiresAt
         })
 
-        // todo send otp on mails
-        // ✅ Get user email
         const user = await this.userModel.findById(userId);
         if (!user || !user.email) {
             return { message: 'User email not found' };
         }
 
-        // ✅ Send OTP via email
+
         await this.emailService.sendEmail({
             recipients: [user.email],
             subject: 'Your OTP Code',

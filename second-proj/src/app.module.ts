@@ -14,9 +14,10 @@ import { LoginModule } from './modules/login-logmodule/login-logmodule.module';
 import { OtpsModule } from './modules/otps/otps.module';
 import { EmailModule } from './modules/email/email.module';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [UserModule, DatabaseModule, UserDetailsModule, PostsModule, CommentsModule, AuthModule, PermissionModule, ActivityModule, ErrorLogModule, LoginModule, OtpsModule, EmailModule, ConfigModule.forRoot({ isGlobal: true })],
+  imports: [UserModule, DatabaseModule, UserDetailsModule, PostsModule, CommentsModule, AuthModule, PermissionModule, ActivityModule, ErrorLogModule, LoginModule, OtpsModule, EmailModule, ConfigModule.forRoot({ isGlobal: true }), ScheduleModule.forRoot()],
   controllers: [AppController],
   providers: [AppService],
 })
