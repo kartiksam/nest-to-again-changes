@@ -15,10 +15,14 @@ import { OtpsModule } from './modules/otps/otps.module';
 import { EmailModule } from './modules/email/email.module';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { FirebaseModule } from './modules/firebase/firebase.module';
+import { GatewayModule } from './modules/gateway/gateway.module';
+
+
 
 @Module({
-  imports: [UserModule, DatabaseModule, UserDetailsModule, PostsModule, CommentsModule, AuthModule, PermissionModule, ActivityModule, ErrorLogModule, LoginModule, OtpsModule, EmailModule, ConfigModule.forRoot({ isGlobal: true }), ScheduleModule.forRoot()],
-  controllers: [AppController],
+  imports: [UserModule, DatabaseModule, UserDetailsModule, PostsModule, CommentsModule, AuthModule, PermissionModule, ActivityModule, ErrorLogModule, LoginModule, OtpsModule, EmailModule, ConfigModule.forRoot({ isGlobal: true }), ScheduleModule.forRoot(), FirebaseModule, GatewayModule],
+  controllers: [AppController,],
   providers: [AppService],
 })
 export class AppModule { }
